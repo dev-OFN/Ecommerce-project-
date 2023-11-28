@@ -181,11 +181,36 @@ $(".add-to-cart-btn").on("click", function(){
             console.log("Adding product to cart...")
         },
         success: function(res){
-            this_val.html("Tick")
+            this_val.html("✔️")
             console.log("Added product to cart....");
             $(".cart-items-count").text(response.totalcartitems)
         }
     })
+    
+    $(".delete-product").on("click", function(){
+        let product_id = $(this).attr("data-product")
+        let this_val = $(this)
+        
+        console.log("PRODUCT_ID:",product_id);
+    
+        $.ajax({
+            url: "/delete-from-cart",
+            data:{
+                "ID": product_id
+            },
+            dataType:"json",
+            beforeSend: function(){
+                this_val.hide()
+            },
+            
+            success: function(response){
+                this_val.show()
+                $(".cart-items-count").text(response.totalcartitems)
+                $("#cart-list").html(response.data)
+            }
+        })
+    })
+
 })
 
 
